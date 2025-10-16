@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Website đã lưu</title>
+  <meta name="description" content="Các website đã được lưu cục bộ." />
+  <style>
+    :root{
+      --bg:#0b0c10; --panel:#12141b; --panel-2:#1b1e29; --text:#e9ecf1; --muted:#aab2c5;
+      --brand:#7aa2ff; --ring:rgba(122,162,255,.35); --card:#0f121a; --border:rgba(255,255,255,.08);
+      --shadow:0 12px 40px rgba(0,0,0,.45); --radius:18px; --radius-sm:12px; --gap:18px;
+      --font:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif;
+      --mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace; --grid:300px;
+      --grad:radial-gradient(1200px 600px at 110% -10%, rgba(122,162,255,.18), transparent 60%),
+             radial-gradient(900px 600px at -10% 120%, rgba(34,197,94,.16), transparent 55%);
+    }
+    @media (prefers-color-scheme: light){
+      :root{ --bg:#f7f8fc; --panel:#fff; --panel-2:#f2f5fb; --text:#0b1220; --muted:#59637a; --card:#fff;
+             --border:rgba(11,18,32,.09); --shadow:0 12px 40px rgba(16,24,40,.08);
+             --grad:radial-gradient(1200px 600px at 110% -10%, rgba(122,162,255,.28), transparent 60%),
+                    radial-gradient(900px 600px at -10% 120%, rgba(34,197,94,.24), transparent 55%); }
+    }
+    *{box-sizing:border-box} html,body{height:100%}
+    body{margin:0;font:15px/1.65 var(--font);color:var(--text);background:var(--bg);background-image:var(--grad)}
+    .wrap{max-width:1160px;margin:40px auto;padding:0 18px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px}
+    .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
+    .logo{width:44px;height:44px;border-radius:14px;background:conic-gradient(from 210deg,#7aa2ff,#22c55e,#7aa2ff);
+          display:grid;place-items:center;color:#fff;font-weight:800;box-shadow:var(--shadow)}
+    h1{margin:0;font-size:clamp(20px,3vw,30px)} .sub{color:var(--muted);margin-top:4px;font-size:13px}
+    .tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .search{position:relative;flex:1 1 380px;min-width:220px}
+    .search input{width:100%;padding:12px 44px 12px 40px;border-radius:999px;border:1px solid var(--border);
+                  background:var(--panel);color:var(--text);outline:none;box-shadow:0 1px 0 rgba(255,255,255,.03) inset,var(--shadow)}
+    .search input:focus{border-color:var(--brand);box-shadow:0 0 0 5px var(--ring),var(--shadow)}
+    .search .ico{position:absolute;left:12px;top:50%;transform:translateY(-50%);opacity:.7;font-size:16px;font-family:var(--mono)}
+    .chip{padding:10px 14px;border-radius:999px;border:1px solid var(--border);background:var(--panel);color:var(--muted);font-size:13px;white-space:nowrap}
+
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(var(--grid),1fr));gap:var(--gap);margin-top:18px}
+    .card{position:relative;display:flex;gap:14px;align-items:flex-start;padding:16px;text-decoration:none;color:inherit;cursor:pointer;
+          background:linear-gradient(180deg,rgba(255,255,255,.02),transparent 40%),var(--card);
+          border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);
+          transition:transform .18s,box-shadow .18s,border-color .18s;overflow:hidden}
+    .card:hover{transform:translateY(-3px) scale(1.01);border-color:rgba(122,162,255,.45)}
+    .card:focus-visible{outline:none;box-shadow:0 0 0 6px var(--ring),var(--shadow)}
+    .card::before{content:"";position:absolute;inset:-1px;border-radius:calc(var(--radius)+1px);padding:1px;
+                  background:linear-gradient(120deg,rgba(122,162,255,.55),rgba(34,197,94,.35),rgba(122,162,255,.55)) border-box;
+                  -webkit-mask:linear-gradient(#000 0 0) padding-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;
+                  opacity:0;transition:opacity .25s}
+    .card:hover::before{opacity:.55}
+    .fav{width:46px;height:46px;border-radius:12px;background:var(--panel-2);display:grid;place-items:center;flex:0 0 auto;overflow:hidden;border:1px solid var(--border)}
+    .fav img{width:100%;height:100%;object-fit:cover;display:block}
+    .fav .placeholder{font-weight:800;font-size:14px;color:var(--muted)}
+    .meta{flex:1;min-width:0}
+    .title{margin:0 0 6px 0;font-size:16px;font-weight:800;letter-spacing:.2px}
+    .note{font-size:13px;color:var(--muted);margin-bottom:6px}
+    .badges{display:flex;gap:6px;flex-wrap:wrap}
+    .badge{font-size:11px;color:var(--muted);border:1px dashed var(--border);padding:4px 8px;border-radius:999px}
+    .arrow{margin-left:auto;display:inline-grid;place-items:center;width:28px;height:28px;border-radius:999px;border:1px solid var(--border);background:var(--panel);flex:0 0 auto}
+    .footer{margin-top:26px;padding-top:12px;display:flex;justify-content:space-between;align-items:center;gap:10px;color:var(--muted);font-size:12px;border-top:1px solid var(--border)}
+    #raw-links{display:none} .empty{text-align:center;color:var(--muted);padding:40px 10px;border:1px dashed var(--border);border-radius:var(--radius-sm);display:none}
+    a,button,input{-webkit-tap-highlight-color:transparent}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <a class="brand" href="#">
+        <div class="logo" aria-hidden="true">LM</div>
+        <div>
+          <h1>Trang chủ</h1>
+          <div class="sub">Duyệt các website đã lưu trên máy.</div>
+        </div>
+      </a>
+      <div class="tools">
+        <div class="search">
+          <span class="ico">⌕</span>
+          <input id="q" type="search" placeholder="Tìm theo tên hoặc ghi chú…" autocomplete="off" />
+        </div>
+        <div class="chip" id="count">0 site</div>
+      </div>
+    </header>
+
+    <section id="cards" class="grid" aria-live="polite"></section>
+    <div id="empty" class="empty">Không tìm thấy kết quả phù hợp.</div>
+
+    <div class="footer">
+      <div>Hoạt động hoàn toàn offline. Thêm/xóa link ở “Nguồn dữ liệu”.</div>
+      <div>Gợi ý: nhấn <span style="font-family:var(--mono)">/</span> để focus ô tìm kiếm.</div>
+    </div>
+
+    <!-- NGUỒN DỮ LIỆU: thêm link tại đây.
+         Ghi chú tùy chỉnh bằng thuộc tính data-note trên <a>. -->
+    <ul id="raw-links">
+      <li>
+        <a
+          href="./offline_sites/[1.1.9.v2].ai-sang-tac-truyen.netlify.app/ai-sang-tac-truyen.netlify.app/index.html"
+          data-note="Sửa lỗi Prompt NFSW.">
+          AI Sáng Tác Truyện - 1.1.9 [v2]
+        </a>
+      </li>
+      <li>
+        <a
+          href="./offline_sites/[1.1.9.v1].ai-sang-tac-truyen-v1.netlify.app/ai-sang-tac-truyen-v1.netlify.app/index.html"
+          data-note="Sửa lỗi Prompt NFSW và ít cảnh báo bộ lọc">
+          AI Sáng Tác Truyện - 1.1.9 [v1]
+        </a>
+      </li>
+      <li>
+        <a
+          href="./offline_sites/[1.1.7].ai-sang-tac-truyen-ver117.netlify.app/ai-sang-tac-truyen-ver117.netlify.app/index.html"
+          data-note="Sửa lỗi Fobidden qua Proxy">
+          AI Sáng Tác Truyện - 1.1.7
+        </a>
+      </li>
+      <li>
+        <a
+          href="./offline_sites/[1.1.2].ai-sang-tac-truyen-ver-cu.netlify.app/ai-sang-tac-truyen-ver-cu.netlify.app/index.html"
+          data-note="Cải tiến hiệu năng và ổn định">
+          AI Sáng Tác Truyện - 1.1.2
+        </a>
+      </li>
+      <li>
+        <a
+          href="./offline_sites/[0.0.0].ai-sang-tac-truyen-ver000.netlify.app/ai-sang-tac-truyen-ver000.netlify.app/index.html"
+          data-note="Phiên bản sơ khai">
+          AI Sáng Tác Truyện - 0.0.0
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <script>
+    (function(){
+      const $ = (s, d=document)=>d.querySelector(s);
+      const $$ = (s, d=document)=>Array.from(d.querySelectorAll(s));
+      const raw = $$('#raw-links a');
+      const cards = $('#cards');
+      const q = $('#q');
+      const chip = $('#count');
+      const empty = $('#empty');
+
+      const norm = s => (s||'').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g,'');
+
+      const makeLetterIcon = letter => {
+        const div = document.createElement('div');
+        div.className = 'placeholder';
+        div.textContent = (letter||'★').toUpperCase();
+        return div;
+      };
+
+      function guessFavicon(href){
+        try{
+          const u = new URL(href, location.href);
+          let p = u.pathname.replace(/index\.html?$/i, '');
+          if(!p.endsWith('/')) p += '/';
+          return p + 'favicon.ico';
+        }catch(e){ return null; }
+      }
+
+      function extractVersion(title){
+        const m = title.match(/-\s*([0-9]+(?:\.[0-9]+)*)(?:\s*(\[[^\]]+\]))?$/);
+        if(!m) return null;
+        return m[1] + (m[2] ? ' ' + m[2] : '');
+      }
+
+      // build data: lấy thêm note từ data-note
+      const data = raw.map(a=>{
+        const href = a.getAttribute('href');
+        const title = (a.textContent || '').trim().replace(/\s+/g,' ');
+        const note = a.getAttribute('data-note') || '';
+        const ver = extractVersion(title);
+        const tags = [];
+        if(/netlify/i.test(href) || /netlify/i.test(title)) tags.push('Netlify');
+        if(/github/i.test(href)) tags.push('GitHub Pages');
+        if(/vercel/i.test(href)) tags.push('Vercel');
+        if(ver) tags.push('v' + ver.replace(/^v/i,''));
+        return { href, title, note, tags };
+      });
+
+      function render(items){
+        cards.innerHTML = '';
+        if(!items.length){
+          empty.style.display = 'block';
+          chip.textContent = '0 site';
+          return;
+        }
+        empty.style.display = 'none';
+        const frag = document.createDocumentFragment();
+
+        items.forEach(item=>{
+          const card = document.createElement('a');
+          card.className = 'card';
+          card.href = item.href;
+          card.rel = 'nofollow';
+          card.draggable = false;
+
+          const fav = document.createElement('div');
+          fav.className = 'fav';
+          const ico = document.createElement('img');
+          ico.alt = '';
+          ico.decoding = 'async';
+          ico.loading = 'lazy';
+          ico.src = guessFavicon(item.href) || '';
+          ico.onerror = () => { fav.innerHTML = ''; fav.appendChild(makeLetterIcon(item.title?.[0])); };
+          if(ico.src) fav.appendChild(ico); else fav.appendChild(makeLetterIcon(item.title?.[0]));
+
+          const meta = document.createElement('div');
+          meta.className = 'meta';
+
+          const h = document.createElement('h3');
+          h.className = 'title';
+          h.textContent = item.title || 'Không tiêu đề';
+
+          // 👉 ghi chú tùy chỉnh (thay cho đường dẫn)
+          if(item.note){
+            const note = document.createElement('div');
+            note.className = 'note';
+            note.textContent = item.note;
+            meta.appendChild(h);
+            meta.appendChild(note);
+          }else{
+            meta.appendChild(h);
+          }
+
+          const badges = document.createElement('div');
+          badges.className = 'badges';
+          (item.tags || []).forEach(t=>{
+            const b = document.createElement('span');
+            b.className = 'badge';
+            b.textContent = t;
+            badges.appendChild(b);
+          });
+
+          meta.appendChild(badges);
+
+          const arrow = document.createElement('span');
+          arrow.className = 'arrow';
+          arrow.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+          card.appendChild(fav);
+          card.appendChild(meta);
+          card.appendChild(arrow);
+          frag.appendChild(card);
+        });
+
+        cards.appendChild(frag);
+        chip.textContent = items.length + (items.length>1 ? ' sites' : ' site');
+      }
+
+      function applyFilter(){
+        const kw = norm(q.value);
+        const items = !kw ? data : data.filter(d => norm(d.title).includes(kw) || norm(d.note).includes(kw));
+        render(items);
+      }
+
+      window.addEventListener('keydown', (e)=>{
+        if(e.key === '/' && document.activeElement !== q){
+          e.preventDefault(); q.focus(); q.select();
+        }
+      });
+
+      q.addEventListener('input', applyFilter);
+
+      render(data);
+    })();
+  </script>
+</body>
+</html>

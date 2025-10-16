@@ -1,0 +1,8 @@
+https://ai-sang-tac-truyen-ver-cu.netlify.app/ -O "C:\\Users\\Mialui\\Desktop\\aisangtac\\offline_sites\\ai-sang-tac-truyen-ver-cu.netlify.app" +*.ai-sang-tac-truyen-ver-cu.netlify.app/* +*.netlify.app/* +*.github.io/* +*.githubusercontent.com/* +*.vercel.app/* +*.pages.dev/* +*.gitlab.io/* +*.surge.sh/* +*.firebaseapp.com/* +*.web.app/* +*.render.com/* +*.azurestaticapps.net/* +*.cloudflare.com/* +*.cdnjs.cloudflare.com/* +*.fonts.googleapis.com/* +*.fonts.gstatic.com/* +*.jsdelivr.net/* +*.cdn.jsdelivr.net/* +*.unpkg.com/* +*.gstatic.com/* +*.googleapis.com/* -n -%! -q -c8 -F "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122 Safari/537.36" "-LOG_DIRLOG_DIR\\log.err.log"
+File generated automatically on Thu, 16 Oct 2025 02:12:27, do NOT edit
+
+To update a mirror, just launch httrack without any parameters
+The existing cache will be used (and modified)
+To have other options, retype all parameters and launch HTTrack
+To continue an interrupted mirror, just launch httrack without any parameters
+
