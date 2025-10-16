@@ -1,130 +1,528 @@
 <!doctype html>
 <html lang="vi">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Website đã lưu</title>
+  <title>Website đã lưu • Nebulae</title>
   <meta name="description" content="Các website đã được lưu cục bộ." />
   <style>
-    :root{
-      --bg:#0b0c10; --panel:#12141b; --panel-2:#1b1e29; --text:#e9ecf1; --muted:#aab2c5;
-      --brand:#7aa2ff; --ring:rgba(122,162,255,.35); --card:#0f121a; --border:rgba(255,255,255,.08);
-      --shadow:0 12px 40px rgba(0,0,0,.45); --radius:18px; --radius-sm:12px; --gap:18px;
-      --font:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif;
-      --mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace; --grid:300px;
-      --grad:radial-gradient(1200px 600px at 110% -10%, rgba(122,162,255,.18), transparent 60%),
-             radial-gradient(900px 600px at -10% 120%, rgba(34,197,94,.16), transparent 55%);
+    :root {
+      --bg: #070812;
+      --panel: #0c0f19;
+      --panel-2: #121828;
+      --text: #eaf0ff;
+      --muted: #9fb0d0;
+      --brand: #8ca7ff;
+      --ring: rgba(140, 167, 255, .35);
+      --card: #0a0f1a;
+      --border: rgba(255, 255, 255, .08);
+      --shadow: 0 12px 40px rgba(0, 0, 0, .55);
+      --radius: 18px;
+      --radius-sm: 12px;
+      --gap: 18px;
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      --grid: 300px;
+      --nebula-1: radial-gradient(1100px 700px at 120% -10%, rgba(140, 167, 255, .18), transparent 60%);
+      --nebula-2: radial-gradient(900px 600px at -10% 120%, rgba(56, 189, 248, .16), transparent 55%);
+      --nebula-3: radial-gradient(800px 500px at 20% -20%, rgba(34, 197, 94, .14), transparent 60%);
     }
-    @media (prefers-color-scheme: light){
-      :root{ --bg:#f7f8fc; --panel:#fff; --panel-2:#f2f5fb; --text:#0b1220; --muted:#59637a; --card:#fff;
-             --border:rgba(11,18,32,.09); --shadow:0 12px 40px rgba(16,24,40,.08);
-             --grad:radial-gradient(1200px 600px at 110% -10%, rgba(122,162,255,.28), transparent 60%),
-                    radial-gradient(900px 600px at -10% 120%, rgba(34,197,94,.24), transparent 55%); }
-    }
-    *{box-sizing:border-box} html,body{height:100%}
-    body{margin:0;font:15px/1.65 var(--font);color:var(--text);background:var(--bg);background-image:var(--grad)}
-    .wrap{max-width:1160px;margin:40px auto;padding:0 18px}
-    header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px}
-    .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
-    .logo{width:44px;height:44px;border-radius:14px;background:conic-gradient(from 210deg,#7aa2ff,#22c55e,#7aa2ff);
-          display:grid;place-items:center;color:#fff;font-weight:800;box-shadow:var(--shadow)}
-    h1{margin:0;font-size:clamp(20px,3vw,30px)} .sub{color:var(--muted);margin-top:4px;font-size:13px}
-    .tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-    .search{position:relative;flex:1 1 380px;min-width:220px}
-    .search input{width:100%;padding:12px 44px 12px 40px;border-radius:999px;border:1px solid var(--border);
-                  background:var(--panel);color:var(--text);outline:none;box-shadow:0 1px 0 rgba(255,255,255,.03) inset,var(--shadow)}
-    .search input:focus{border-color:var(--brand);box-shadow:0 0 0 5px var(--ring),var(--shadow)}
-    .search .ico{position:absolute;left:12px;top:50%;transform:translateY(-50%);opacity:.7;font-size:16px;font-family:var(--mono)}
-    .chip{padding:10px 14px;border-radius:999px;border:1px solid var(--border);background:var(--panel);color:var(--muted);font-size:13px;white-space:nowrap}
 
-    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(var(--grid),1fr));gap:var(--gap);margin-top:18px}
-    .card{position:relative;display:flex;gap:14px;align-items:flex-start;padding:16px;text-decoration:none;color:inherit;cursor:pointer;
-          background:linear-gradient(180deg,rgba(255,255,255,.02),transparent 40%),var(--card);
-          border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);
-          transition:transform .18s,box-shadow .18s,border-color .18s;overflow:hidden}
-    .card:hover{transform:translateY(-3px) scale(1.01);border-color:rgba(122,162,255,.45)}
-    .card:focus-visible{outline:none;box-shadow:0 0 0 6px var(--ring),var(--shadow)}
-    .card::before{content:"";position:absolute;inset:-1px;border-radius:calc(var(--radius)+1px);padding:1px;
-                  background:linear-gradient(120deg,rgba(122,162,255,.55),rgba(34,197,94,.35),rgba(122,162,255,.55)) border-box;
-                  -webkit-mask:linear-gradient(#000 0 0) padding-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;
-                  opacity:0;transition:opacity .25s}
-    .card:hover::before{opacity:.55}
-    .fav{width:46px;height:46px;border-radius:12px;background:var(--panel-2);display:grid;place-items:center;flex:0 0 auto;overflow:hidden;border:1px solid var(--border)}
-    .fav img{width:100%;height:100%;object-fit:cover;display:block}
-    .fav .placeholder{font-weight:800;font-size:14px;color:var(--muted)}
-    .meta{flex:1;min-width:0}
-    .title{margin:0 0 6px 0;font-size:16px;font-weight:800;letter-spacing:.2px}
-    .note{font-size:13px;color:var(--muted);margin-bottom:6px}
-    .badges{display:flex;gap:6px;flex-wrap:wrap}
-    .badge{font-size:11px;color:var(--muted);border:1px dashed var(--border);padding:4px 8px;border-radius:999px}
-    .arrow{margin-left:auto;display:inline-grid;place-items:center;width:28px;height:28px;border-radius:999px;border:1px solid var(--border);background:var(--panel);flex:0 0 auto}
-    .footer{margin-top:26px;padding-top:12px;display:flex;justify-content:space-between;align-items:center;gap:10px;color:var(--muted);font-size:12px;border-top:1px solid var(--border)}
-    #raw-links{display:none} .empty{text-align:center;color:var(--muted);padding:40px 10px;border:1px dashed var(--border);border-radius:var(--radius-sm);display:none}
-    a,button,input{-webkit-tap-highlight-color:transparent}
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f6f8ff;
+        --panel: #ffffff;
+        --panel-2: #f3f6ff;
+        --text: #0b1220;
+        --muted: #5d6a86;
+        --card: #ffffff;
+        --border: rgba(11, 18, 32, .09);
+        --shadow: 0 12px 40px rgba(16, 24, 40, .08);
+        --nebula-1: radial-gradient(1100px 700px at 120% -10%, rgba(140, 167, 255, .28), transparent 60%);
+        --nebula-2: radial-gradient(900px 600px at -10% 120%, rgba(56, 189, 248, .22), transparent 55%);
+        --nebula-3: radial-gradient(800px 500px at 20% -20%, rgba(34, 197, 94, .20), transparent 60%);
+      }
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    html,
+    body {
+      height: 100%
+    }
+
+    body {
+      margin: 0;
+      font: 15px/1.65 var(--font);
+      color: var(--text);
+      background: var(--bg);
+      overflow-x: hidden;
+    }
+
+    /* ======= Nebulae background ======= */
+    .bg {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background:
+        var(--nebula-1),
+        var(--nebula-2),
+        var(--nebula-3),
+        radial-gradient(1200px 900px at 50% -30%, rgba(99, 102, 241, .12), transparent 60%),
+        radial-gradient(1200px 900px at 50% 130%, rgba(20, 184, 166, .10), transparent 60%);
+      animation: drift 26s ease-in-out infinite alternate;
+      will-change: background-position;
+    }
+
+    @keyframes drift {
+      0% {
+        background-position: 0 0, 0 0, 0 0, 0 0, 0 0
+      }
+
+      100% {
+        background-position: 30px -40px, -45px 30px, 25px 20px, 15px -15px, -20px 10px
+      }
+    }
+
+    /* Subtle starfield canvas */
+    canvas#nebula-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      opacity: .55;
+      mix-blend-mode: screen;
+      filter: blur(.15px) drop-shadow(0 0 2px rgba(255, 255, 255, .4));
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .bg {
+        animation: none
+      }
+
+      canvas#nebula-canvas {
+        display: none
+      }
+    }
+
+    .wrap {
+      max-width: 1160px;
+      margin: 40px auto;
+      padding: 0 18px
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: inherit
+    }
+
+    .logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background:
+        conic-gradient(from 210deg, #8ca7ff, #22c55e, #60a5fa, #8ca7ff);
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-weight: 800;
+      box-shadow: var(--shadow);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(20px, 3vw, 30px)
+    }
+
+    .sub {
+      color: var(--muted);
+      margin-top: 4px;
+      font-size: 13px
+    }
+
+    .tools {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center
+    }
+
+    .search {
+      position: relative;
+      flex: 1 1 380px;
+      min-width: 220px
+    }
+
+    .search input {
+      width: 100%;
+      padding: 12px 44px 12px 40px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255, 255, 255, .03), transparent), var(--panel);
+      color: var(--text);
+      outline: none;
+      box-shadow: 0 1px 0 rgba(255, 255, 255, .03) inset, var(--shadow)
+    }
+
+    .search input:focus {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 6px var(--ring), var(--shadow)
+    }
+
+    .search .ico {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      opacity: .7;
+      font-size: 16px;
+      font-family: var(--mono)
+    }
+
+    .chip {
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255, 255, 255, .02), transparent), var(--panel);
+      color: var(--muted);
+      font-size: 13px;
+      white-space: nowrap;
+      backdrop-filter: blur(6px);
+    }
+
+    /* Tag filter bar */
+    .tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 8px
+    }
+
+    .tag {
+      padding: 8px 12px;
+      border-radius: 9999px;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      background: linear-gradient(180deg, rgba(255, 255, 255, .02), transparent), var(--panel);
+      color: var(--muted);
+      font-size: 12px;
+      user-select: none;
+      transition: all .18s;
+    }
+
+    .tag.active {
+      color: var(--text);
+      border-color: rgba(140, 167, 255, .6);
+      box-shadow: 0 0 0 4px var(--ring)
+    }
+
+    .tag .count {
+      opacity: .7;
+      margin-left: 6px;
+      font-variant-numeric: tabular-nums
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(var(--grid), 1fr));
+      gap: var(--gap);
+      margin-top: 18px
+    }
+
+    .card {
+      position: relative;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 16px;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .03), transparent 40%),
+        radial-gradient(60% 100% at 110% 10%, rgba(140, 167, 255, .06), transparent 60%),
+        var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      transition: transform .18s, box-shadow .18s, border-color .18s;
+      overflow: hidden;
+      will-change: transform;
+    }
+
+    .card:hover {
+      transform: translateY(-4px) scale(1.012);
+      border-color: rgba(140, 167, 255, .5)
+    }
+
+    .card:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 8px var(--ring), var(--shadow)
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      border-radius: calc(var(--radius)+1px);
+      padding: 1px;
+      background: linear-gradient(120deg, rgba(140, 167, 255, .6), rgba(34, 197, 94, .4), rgba(99, 102, 241, .5)) border-box;
+      -webkit-mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity .25s
+    }
+
+    .card:hover::before {
+      opacity: .55
+    }
+
+    .fav {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      background: var(--panel-2);
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      overflow: hidden;
+      border: 1px solid var(--border)
+    }
+
+    .fav img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block
+    }
+
+    .fav .placeholder {
+      font-weight: 800;
+      font-size: 14px;
+      color: var(--muted)
+    }
+
+    .meta {
+      flex: 1;
+      min-width: 0
+    }
+
+    .title {
+      margin: 0 0 6px 0;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: .2px
+    }
+
+    .title mark {
+      background: transparent;
+      color: inherit;
+      position: relative
+    }
+
+    .title mark::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 2px;
+      height: 10px;
+      border-radius: 6px;
+      background: rgba(140, 167, 255, .22);
+      z-index: -1
+    }
+
+    .note {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 6px
+    }
+
+    .badges {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap
+    }
+
+    .badge {
+      font-size: 11px;
+      color: var(--muted);
+      border: 1px dashed var(--border);
+      padding: 4px 8px;
+      border-radius: 999px
+    }
+
+    .nebula-text {
+      background: linear-gradient(120deg,
+          #8ca7ff,
+          #38bdf8,
+          #22c55e,
+          #60a5fa,
+          #8ca7ff);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: nebulaShift 6s ease-in-out infinite alternate;
+      font-weight: 800;
+      letter-spacing: 0.2px;
+    }
+
+    @keyframes nebulaShift {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      margin-left: auto;
+      flex: 0 0 auto
+    }
+
+    .btn {
+      display: inline-grid;
+      place-items: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      cursor: pointer;
+      transition: all .18s;
+      color: var(--muted)
+    }
+
+    .btn:hover {
+      border-color: rgba(140, 167, 255, .5);
+      color: var(--text)
+    }
+
+    .footer {
+      margin-top: 26px;
+      padding-top: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 12px;
+      border-top: 1px solid var(--border)
+    }
+
+    #raw-links {
+      display: none
+    }
+
+    .empty {
+      text-align: center;
+      color: var(--muted);
+      padding: 40px 10px;
+      border: 1px dashed var(--border);
+      border-radius: var(--radius-sm);
+      display: none
+    }
+
+    a,
+    button,
+    input {
+      -webkit-tap-highlight-color: transparent
+    }
   </style>
 </head>
+
 <body>
+  <!-- Nebulae background -->
+  <div class="bg" aria-hidden="true"></div>
+  <canvas id="nebula-canvas" aria-hidden="true"></canvas>
+
   <div class="wrap">
     <header>
-      <a class="brand" href="#">
+      <a class="brand" href="#" aria-label="Trang chủ đã lưu">
         <div class="logo" aria-hidden="true">LM</div>
         <div>
-          <h1>Trang chủ</h1>
+          <h1 class="nebula-text">Trang chủ</h1>
           <div class="sub">Duyệt các website đã lưu trên máy.</div>
         </div>
       </a>
+      <div style="flex:1"></div>
       <div class="tools">
         <div class="search">
           <span class="ico">⌕</span>
-          <input id="q" type="search" placeholder="Tìm theo tên hoặc ghi chú…" autocomplete="off" />
+          <input id="q" type="search" placeholder="Tìm theo tên, ghi chú hoặc tag…" autocomplete="off" />
         </div>
         <div class="chip" id="count">0 site</div>
       </div>
     </header>
 
+    <div class="tags" id="tagbar" aria-label="Bộ lọc theo tag"></div>
+
     <section id="cards" class="grid" aria-live="polite"></section>
     <div id="empty" class="empty">Không tìm thấy kết quả phù hợp.</div>
 
     <div class="footer">
-      <div>Hoạt động hoàn toàn offline.”.</div>
-      <div>Gợi ý: nhấn <span style="font-family:var(--mono)">/</span> để focus ô tìm kiếm.</div>
+      <div>Hoạt động hoàn toàn offline.</div>
+      <div>Gợi ý: nhấn <span style="font-family:var(--mono)">/</span> để focus ô tìm kiếm, <span
+          style="font-family:var(--mono)">Esc</span> để xoá.</div>
     </div>
 
-    <!-- NGUỒN DỮ LIỆU: thêm link tại đây.
-         Ghi chú tùy chỉnh bằng thuộc tính data-note trên <a>. -->
+    <!-- NGUỒN DỮ LIỆU: thêm link tại đây. Ghi chú tùy chỉnh bằng data-note -->
     <ul id="raw-links">
       <li>
-        <a
-          href="./offline_sites/[1.1.9.v2].ai-sang-tac-truyen.netlify.app/ai-sang-tac-truyen.netlify.app/index.html"
-          data-note="Sửa lỗi Prompt NFSW.">
+        <a href="./offline_sites/[1.1.9.v2].ai-sang-tac-truyen.netlify.app/ai-sang-tac-truyen.netlify.app/index.html"
+          data-note="Sửa lỗi Prompt NFSW."
+          data-icon="./offline_sites/[1.1.9.v2].ai-sang-tac-truyen.netlify.app/ntk918.github.io/my-images/dragon_light.webp">
           AI Sáng Tác Truyện - 1.1.9 [v2]
         </a>
       </li>
       <li>
-        <a
-          href="./offline_sites/[1.1.9.v1].ai-sang-tac-truyen-v1.netlify.app/ai-sang-tac-truyen-v1.netlify.app/index.html"
-          data-note="Sửa lỗi Prompt NFSW và ít cảnh báo bộ lọc">
+        <a href="./offline_sites/[1.1.9.v1].ai-sang-tac-truyen-v1.netlify.app/ai-sang-tac-truyen-v1.netlify.app/index.html"
+          data-note="Sửa lỗi Prompt NFSW và ít cảnh báo bộ lọc"
+          data-icon="./offline_sites/[1.1.9.v2].ai-sang-tac-truyen.netlify.app/ntk918.github.io/my-images/dragon_light.webp">
           AI Sáng Tác Truyện - 1.1.9 [v1]
         </a>
       </li>
       <li>
-        <a
-          href="./offline_sites/[1.1.7].ai-sang-tac-truyen-ver117.netlify.app/ai-sang-tac-truyen-ver117.netlify.app/index.html"
-          data-note="Sửa lỗi Fobidden qua Proxy">
+        <a href="./offline_sites/[1.1.7].ai-sang-tac-truyen-ver117.netlify.app/ai-sang-tac-truyen-ver117.netlify.app/index.html"
+          data-note="Sửa lỗi Fobidden qua Proxy"
+          data-icon="./offline_sites/[1.1.9.v2].ai-sang-tac-truyen.netlify.app/ntk918.github.io/my-images/dragon_light.webp">
           AI Sáng Tác Truyện - 1.1.7
         </a>
       </li>
       <li>
-        <a
-          href="./offline_sites/[1.1.2].ai-sang-tac-truyen-ver-cu.netlify.app/ai-sang-tac-truyen-ver-cu.netlify.app/index.html"
-          data-note="Cải tiến hiệu năng và ổn định">
+        <a href="./offline_sites/[1.1.2].ai-sang-tac-truyen-ver-cu.netlify.app/ai-sang-tac-truyen-ver-cu.netlify.app/index.html"
+          data-note="Cải tiến hiệu năng và ổn định"
+          data-icon="./offline_sites/[1.1.9.v2].ai-sang-tac-truyen.netlify.app/ntk918.github.io/my-images/dragon_light.webp">
           AI Sáng Tác Truyện - 1.1.2
         </a>
       </li>
       <li>
-        <a
-          href="./offline_sites/[0.0.0].ai-sang-tac-truyen-ver000.netlify.app/ai-sang-tac-truyen-ver000.netlify.app/index.html"
-          data-note="Phiên bản sơ khai">
+        <a href="./offline_sites/[0.0.0].ai-sang-tac-truyen-ver000.netlify.app/ai-sang-tac-truyen-ver000.netlify.app/index.html"
+          data-note="Phiên bản sơ khai"
+          data-icon="./offline_sites/[1.1.9.v2].ai-sang-tac-truyen.netlify.app/ntk918.github.io/my-images/dragon_light.webp">
           AI Sáng Tác Truyện - 0.0.0
         </a>
       </li>
@@ -132,56 +530,181 @@
   </div>
 
   <script>
-    (function(){
-      const $ = (s, d=document)=>d.querySelector(s);
-      const $$ = (s, d=document)=>Array.from(d.querySelectorAll(s));
+    (function () {
+      const $ = (s, d = document) => d.querySelector(s);
+      const $$ = (s, d = document) => Array.from(d.querySelectorAll(s));
       const raw = $$('#raw-links a');
       const cards = $('#cards');
       const q = $('#q');
       const chip = $('#count');
       const empty = $('#empty');
+      const tagbar = $('#tagbar');
+      const canvas = $('#nebula-canvas');
+      const ctx = canvas.getContext('2d');
 
-      const norm = s => (s||'').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g,'');
+      // ===== Starfield (low cost) =====
+      let stars = [];
+      function resizeCanvas() {
+        canvas.width = innerWidth; canvas.height = innerHeight;
+        stars = Array.from({ length: Math.min(220, Math.round(innerWidth * innerHeight / 9000)) }, () => ({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          r: Math.random() * 1.1 + 0.2,
+          s: Math.random() * 0.4 + 0.05,
+          a: Math.random() * Math.PI * 2
+        }));
+      }
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (const st of stars) {
+          st.a += st.s / 50;
+          const tw = (Math.sin(st.a) * 0.35 + 0.65);
+          ctx.globalAlpha = 0.35 + tw * 0.65;
+          ctx.beginPath();
+          ctx.arc(st.x, st.y, st.r * (0.6 + tw * 0.7), 0, Math.PI * 2);
+          ctx.fillStyle = '#bcd3ff';
+          ctx.fill();
+        }
+        requestAnimationFrame(draw);
+      }
+      resizeCanvas(); draw();
+      addEventListener('resize', resizeCanvas, { passive: true });
+
+      // ===== Utilities =====
+      const norm = s => (s || '').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '');
+      const LS_KEY = 'nebulae_notes_v1';
+
+      const notesStore = {
+        _map: (() => { try { return JSON.parse(localStorage.getItem(LS_KEY) || '{}'); } catch { return {}; } })(),
+        get(href, fallback) { return this._map[href] ?? fallback ?? ''; },
+        set(href, note) { this._map[href] = note; localStorage.setItem(LS_KEY, JSON.stringify(this._map)); }
+      };
 
       const makeLetterIcon = letter => {
         const div = document.createElement('div');
         div.className = 'placeholder';
-        div.textContent = (letter||'★').toUpperCase();
+        div.textContent = (letter || '★').toUpperCase();
         return div;
       };
 
-      function guessFavicon(href){
-        try{
+      function guessFavicon(href) {
+        try {
           const u = new URL(href, location.href);
+          // strip index.html and keep folder
           let p = u.pathname.replace(/index\.html?$/i, '');
-          if(!p.endsWith('/')) p += '/';
+          if (!p.endsWith('/')) p += '/';
+          // Look for favicon.ico within the same snapshot folder
           return p + 'favicon.ico';
-        }catch(e){ return null; }
+        } catch (e) { return null; }
       }
 
-      function extractVersion(title){
+      function extractVersion(title) {
         const m = title.match(/-\s*([0-9]+(?:\.[0-9]+)*)(?:\s*(\[[^\]]+\]))?$/);
-        if(!m) return null;
+        if (!m) return null;
         return m[1] + (m[2] ? ' ' + m[2] : '');
       }
 
-      // build data: lấy thêm note từ data-note
-      const data = raw.map(a=>{
+      // ===== Build data =====
+      const data = raw.map(a => {
         const href = a.getAttribute('href');
-        const title = (a.textContent || '').trim().replace(/\s+/g,' ');
-        const note = a.getAttribute('data-note') || '';
+        const title = (a.textContent || '').trim().replace(/\s+/g, ' ');
+        const noteDefault = a.getAttribute('data-note') || '';
+        const note = notesStore.get(href, noteDefault);
         const ver = extractVersion(title);
+        const icon = a.getAttribute('data-icon') || ''; // ✅ icon tùy chỉnh
         const tags = [];
-        if(/netlify/i.test(href) || /netlify/i.test(title)) tags.push('Netlify');
-        if(/github/i.test(href)) tags.push('GitHub Pages');
-        if(/vercel/i.test(href)) tags.push('Vercel');
-        if(ver) tags.push('v' + ver.replace(/^v/i,''));
-        return { href, title, note, tags };
+        if (/netlify/i.test(href) || /netlify/i.test(title)) tags.push('Netlify');
+        if (/github/i.test(href)) tags.push('GitHub Pages');
+        if (/vercel/i.test(href)) tags.push('Vercel');
+        if (ver) tags.push('v' + ver.replace(/^v/i, ''));
+        return { href, title, note, tags, ver, icon };
       });
 
-      function render(items){
+      // ===== Tag bar =====
+      const allTags = Array.from(new Set(data.flatMap(d => d.tags))).sort((a, b) => a.localeCompare(b, 'vi'));
+      const activeTags = new Set();
+
+      // 👉 Chỉ dùng các provider, loại toàn bộ tag phiên bản (bắt đầu bằng "v" + số)
+      const providerWhitelist = ['Netlify', 'GitHub Pages', 'Vercel'];
+      let displayTags = allTags.filter(t => !/^v\d/i.test(t));                // bỏ version
+      const whitelisted = displayTags.filter(t => providerWhitelist.includes(t));
+      // nếu tìm được trong whitelist thì chỉ hiển thị whitelist; nếu không thì dùng displayTags (đã loại version)
+      displayTags = whitelisted.length ? providerWhitelist.filter(p => whitelisted.includes(p)) : displayTags;
+
+      function renderTags() {
+        tagbar.innerHTML = '';
+        const frag = document.createDocumentFragment();
+
+        // Nút "Tất cả" — mặc định ACTIVE
+        const btnAll = document.createElement('button');
+        btnAll.type = 'button';
+        btnAll.className = 'tag active';
+        btnAll.textContent = 'Tất cả';
+        const cAll = document.createElement('span'); cAll.className = 'count'; cAll.textContent = data.length;
+        btnAll.appendChild(cAll);
+        btnAll.addEventListener('click', () => {
+          activeTags.clear();
+          $$('.tag', tagbar).forEach(t => t.classList.remove('active'));
+          btnAll.classList.add('active');
+          applyFilter();
+        });
+        frag.appendChild(btnAll);
+
+        // Chỉ render provider (đã loại version)
+        displayTags.forEach(t => {
+          const count = data.filter(d => d.tags.includes(t)).length;
+          const el = document.createElement('button');
+          el.type = 'button';
+          el.className = 'tag';
+          el.textContent = t;
+          const c = document.createElement('span'); c.className = 'count'; c.textContent = count;
+          el.appendChild(c);
+          el.addEventListener('click', () => {
+            btnAll.classList.remove('active');
+            if (activeTags.has(t)) activeTags.delete(t); else activeTags.add(t);
+            el.classList.toggle('active');
+            if (activeTags.size === 0) btnAll.click();
+            else applyFilter();
+          });
+          frag.appendChild(el);
+        });
+
+        tagbar.appendChild(frag);
+      }
+      renderTags();
+
+
+      // ===== Render cards =====
+      const lazyIcos = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            const img = e.target;
+            img.src = img.dataset.src;
+            lazyIcos.unobserve(img);
+          }
+        });
+      }, { rootMargin: '200px' });
+
+      function highlight(text, kw) {
+        if (!kw) return text;
+        const i = norm(text).indexOf(kw);
+        if (i < 0) return text;
+        const realSlice = (src, start, len) => {
+          let cur = 0, out = '';
+          for (const ch of src) {
+            if (cur >= start && cur < start + len) out += ch;
+            cur++;
+            if (cur >= start + len) break;
+          }
+          return out;
+        };
+        // Approx fallback: just split by length (safe enough for most cases here)
+        return text.slice(0, i) + '<mark>' + text.slice(i, i + kw.length) + '</mark>' + text.slice(i + kw.length);
+      }
+
+      function render(items, kw = '') {
         cards.innerHTML = '';
-        if(!items.length){
+        if (!items.length) {
           empty.style.display = 'block';
           chip.textContent = '0 site';
           return;
@@ -189,7 +712,7 @@
         empty.style.display = 'none';
         const frag = document.createDocumentFragment();
 
-        items.forEach(item=>{
+        items.forEach(item => {
           const card = document.createElement('a');
           card.className = 'card';
           card.href = item.href;
@@ -202,69 +725,97 @@
           ico.alt = '';
           ico.decoding = 'async';
           ico.loading = 'lazy';
-          ico.src = guessFavicon(item.href) || '';
-          ico.onerror = () => { fav.innerHTML = ''; fav.appendChild(makeLetterIcon(item.title?.[0])); };
-          if(ico.src) fav.appendChild(ico); else fav.appendChild(makeLetterIcon(item.title?.[0]));
+
+          // Nếu có icon tùy chỉnh
+          const customIcon = item.icon || '';
+          const guess = customIcon || guessFavicon(item.href) || '';
+          if (guess) {
+            ico.src = guess;
+            ico.onerror = () => {
+              fav.innerHTML = '';
+              fav.appendChild(makeLetterIcon(item.title?.[0]));
+            };
+            fav.appendChild(ico);
+          } else {
+            fav.appendChild(makeLetterIcon(item.title?.[0]));
+          }
 
           const meta = document.createElement('div');
           meta.className = 'meta';
 
           const h = document.createElement('h3');
-          h.className = 'title';
-          h.textContent = item.title || 'Không tiêu đề';
+          h.className = 'title nebula-text';
+          h.innerHTML = highlight(item.title || 'Không tiêu đề', kw);
 
-          // 👉 ghi chú tùy chỉnh (thay cho đường dẫn)
-          if(item.note){
-            const note = document.createElement('div');
-            note.className = 'note';
-            note.textContent = item.note;
-            meta.appendChild(h);
-            meta.appendChild(note);
-          }else{
-            meta.appendChild(h);
-          }
+          const note = document.createElement('div');
+          note.className = 'note';
+          if (item.note) note.textContent = item.note;
 
           const badges = document.createElement('div');
           badges.className = 'badges';
-          (item.tags || []).forEach(t=>{
+          (item.tags || []).forEach(t => {
             const b = document.createElement('span');
             b.className = 'badge';
             b.textContent = t;
             badges.appendChild(b);
           });
 
+          // Không còn phần actions, chỉ hiển thị meta và fav
+          meta.appendChild(h);
+          if (item.note) meta.appendChild(note);
           meta.appendChild(badges);
-
-          const arrow = document.createElement('span');
-          arrow.className = 'arrow';
-          arrow.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
           card.appendChild(fav);
           card.appendChild(meta);
-          card.appendChild(arrow);
           frag.appendChild(card);
         });
 
         cards.appendChild(frag);
-        chip.textContent = items.length + (items.length>1 ? ' sites' : ' site');
+        chip.textContent = items.length + (items.length > 1 ? ' sites' : ' site');
       }
 
-      function applyFilter(){
+      function applyFilter() {
         const kw = norm(q.value);
-        const items = !kw ? data : data.filter(d => norm(d.title).includes(kw) || norm(d.note).includes(kw));
-        render(items);
+        const tagActiveArr = Array.from(activeTags);
+        let items = data.filter(d => {
+          const inKw = !kw || norm(d.title).includes(kw) || norm(d.note).includes(kw) || d.tags.some(t => norm(t).includes(kw));
+          const inTag = !tagActiveArr.length || tagActiveArr.every(t => d.tags.includes(t));
+          return inKw && inTag;
+        });
+        // Sort newest-looking versions first if tag 'vX' exists; else by title
+        items.sort((a, b) => {
+          const va = (a.tags.find(t => /^v[0-9.]/i.test(t)) || '').slice(1);
+          const vb = (b.tags.find(t => /^v[0-9.]/i.test(t)) || '').slice(1);
+          if (va && vb && va !== vb) {
+            // naive semver-ish
+            const pa = va.split(/[^\d]+/).map(n => parseInt(n || '0'));
+            const pb = vb.split(/[^\d]+/).map(n => parseInt(n || '0'));
+            for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
+              const da = pa[i] || 0, db = pb[i] || 0;
+              if (da !== db) return db - da;
+            }
+          }
+          return a.title.localeCompare(b.title, 'vi');
+        });
+        render(items, kw);
       }
 
-      window.addEventListener('keydown', (e)=>{
-        if(e.key === '/' && document.activeElement !== q){
+      // Shortcuts
+      window.addEventListener('keydown', (e) => {
+        if (e.key === '/' && document.activeElement !== q) {
           e.preventDefault(); q.focus(); q.select();
         }
+        if (e.key === 'Escape') {
+          if (q.value) { q.value = ''; applyFilter(); }
+          else q.blur();
+        }
       });
-
       q.addEventListener('input', applyFilter);
 
-      render(data);
+      // First render
+      applyFilter();
     })();
   </script>
 </body>
+
 </html>
