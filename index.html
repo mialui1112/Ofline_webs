@@ -93,9 +93,9 @@
       inset: 0;
       z-index: -1;
       pointer-events: none;
-      opacity: .55;
+      opacity: .38;
+      /* giảm opacity */
       mix-blend-mode: screen;
-      filter: blur(.15px) drop-shadow(0 0 2px rgba(255, 255, 255, .4));
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -258,7 +258,7 @@
         var(--card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      box-shadow: var(--shadow);
+      box-shadow: none;
       transition: transform .18s, box-shadow .18s, border-color .18s;
       overflow: hidden;
       will-change: transform;
@@ -266,7 +266,8 @@
 
     .card:hover {
       transform: translateY(-4px) scale(1.012);
-      border-color: rgba(140, 167, 255, .5)
+      border-color: rgba(140, 167, 255, .5);
+      box-shadow: var(--shadow)
     }
 
     .card:focus-visible {
@@ -368,18 +369,18 @@
     }
 
     .nebula-text {
-      background: linear-gradient(120deg,
-          #8ca7ff,
-          #38bdf8,
-          #22c55e,
-          #60a5fa,
-          #8ca7ff);
-      background-size: 300% 300%;
+      background: linear-gradient(120deg, #8ca7ff, #38bdf8, #c522af, #60a5fa, #8ca7ff);
+      background-size: 240% 240%;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      animation: nebulaShift 6s ease-in-out infinite alternate;
-      font-weight: 800;
-      letter-spacing: 0.2px;
+      animation: nebulaShift 10s ease-in-out infinite alternate;
+      /* chậm hơn */
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .nebula-text {
+        animation: none;
+      }
     }
 
     @keyframes nebulaShift {
@@ -484,7 +485,7 @@
     <div id="empty" class="empty">Không tìm thấy kết quả phù hợp.</div>
 
     <div class="footer">
-      <div>Hoạt động hoàn toàn offline.</div>
+      <div>Đây là bản Clone, không dựa vào bản gốc.</div>
       <div>Gợi ý: nhấn <span style="font-family:var(--mono)">/</span> để focus ô tìm kiếm, <span
           style="font-family:var(--mono)">Esc</span> để xoá.</div>
     </div>
@@ -502,7 +503,7 @@
         <a href="./offline_sites/role-verse-lite-chester.netlify.app/role-verse-lite-chester.netlify.app/index.html"
           data-note="Nhập vai nhân vật cùng Ai với cấu hình nhẹ, mượt"
           data-icon="https://i.postimg.cc/Rh4Fr0rx/z6715421803152-da37eaa2f76944a1397bb679b27802dc.jpg">
-          AI Nhập vai 
+          AI Nhập vai
         </a>
       </li>
       <li>
@@ -558,30 +559,39 @@
 
       // ===== Starfield (low cost) =====
       let stars = [];
+      let rafId = null;
       function resizeCanvas() {
         canvas.width = innerWidth; canvas.height = innerHeight;
-        stars = Array.from({ length: Math.min(220, Math.round(innerWidth * innerHeight / 9000)) }, () => ({
+        // mật độ từ /9000 -> /16000 (ít sao hơn ~40%)
+        const area = innerWidth * innerHeight;
+        const density = area < 500000 ? 40000 : 30000; // màn nhỏ ít sao, màn lớn nhiều hơn chút
+        stars = Array.from({ length: Math.min(100, Math.round(area / density)) }, () => ({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
-          r: Math.random() * 1.1 + 0.2,
-          s: Math.random() * 0.4 + 0.05,
+          r: Math.random() * 1 + 0.2,
+          s: Math.random() * 0.35 + 0.04,
           a: Math.random() * Math.PI * 2
         }));
       }
       function draw() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const { width, height } = canvas;
+        ctx.clearRect(0, 0, width, height);
         for (const st of stars) {
           st.a += st.s / 50;
           const tw = (Math.sin(st.a) * 0.35 + 0.65);
-          ctx.globalAlpha = 0.35 + tw * 0.65;
+          ctx.globalAlpha = 0.28 + tw * 0.52;
           ctx.beginPath();
           ctx.arc(st.x, st.y, st.r * (0.6 + tw * 0.7), 0, Math.PI * 2);
           ctx.fillStyle = '#bcd3ff';
           ctx.fill();
         }
-        requestAnimationFrame(draw);
+        rafId = requestAnimationFrame(draw);
       }
-      resizeCanvas(); draw();
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) { if (rafId) cancelAnimationFrame(rafId); rafId = null; }
+        else { if (!rafId) rafId = requestAnimationFrame(draw); }
+      });
+      resizeCanvas(); rafId = requestAnimationFrame(draw);
       addEventListener('resize', resizeCanvas, { passive: true });
 
       // ===== Utilities =====
@@ -625,18 +635,24 @@
         const noteDefault = a.getAttribute('data-note') || '';
         const note = notesStore.get(href, noteDefault);
         const ver = extractVersion(title);
-        const icon = a.getAttribute('data-icon') || ''; // ✅ icon tùy chỉnh
+        const icon = a.getAttribute('data-icon') || '';
         const tags = [];
         if (/netlify/i.test(href) || /netlify/i.test(title)) tags.push('Netlify');
         if (/github/i.test(href)) tags.push('GitHub Pages');
         if (/vercel/i.test(href)) tags.push('Vercel');
         if (ver) tags.push('v' + ver.replace(/^v/i, ''));
-        return { href, title, note, tags, ver, icon };
+
+        // 🔥 cache chuỗi chuẩn hoá 1 lần
+        const titleNorm = norm(title);
+        const noteNorm = norm(note);
+        const tagsNorm = tags.map(t => norm(t));
+
+        return { href, title, note, tags, ver, icon, titleNorm, noteNorm, tagsNorm };
       });
 
       // ===== Tag bar =====
       const allTags = Array.from(new Set(data.flatMap(d => d.tags))).sort((a, b) => a.localeCompare(b, 'vi'));
-      const activeTags = new Set();
+      let activeTag = null;
 
       // 👉 Chỉ dùng các provider, loại toàn bộ tag phiên bản (bắt đầu bằng "v" + số)
       const providerWhitelist = ['Netlify', 'GitHub Pages', 'Vercel'];
@@ -657,7 +673,8 @@
         const cAll = document.createElement('span'); cAll.className = 'count'; cAll.textContent = data.length;
         btnAll.appendChild(cAll);
         btnAll.addEventListener('click', () => {
-          activeTags.clear();
+          activeTag = null;
+          // reset trạng thái active
           $$('.tag', tagbar).forEach(t => t.classList.remove('active'));
           btnAll.classList.add('active');
           applyFilter();
@@ -673,13 +690,20 @@
           el.textContent = t;
           const c = document.createElement('span'); c.className = 'count'; c.textContent = count;
           el.appendChild(c);
+
           el.addEventListener('click', () => {
-            btnAll.classList.remove('active');
-            if (activeTags.has(t)) activeTags.delete(t); else activeTags.add(t);
-            el.classList.toggle('active');
-            if (activeTags.size === 0) btnAll.click();
-            else applyFilter();
+            if (activeTag === t) {
+              // bấm lại cùng tag -> về "Tất cả"
+              btnAll.click();
+              return;
+            }
+            // chọn tag mới -> chỉ 1 tag active
+            activeTag = t;
+            $$('.tag', tagbar).forEach(x => x.classList.remove('active'));
+            el.classList.add('active');
+            applyFilter();
           });
+
           frag.appendChild(el);
         });
 
@@ -715,7 +739,144 @@
         // Approx fallback: just split by length (safe enough for most cases here)
         return text.slice(0, i) + '<mark>' + text.slice(i, i + kw.length) + '</mark>' + text.slice(i + kw.length);
       }
+      function renderChunked(items, kw = '') {
+        cards.innerHTML = '';
+        if (!items.length) {
+          empty.style.display = 'block'; chip.textContent = '0 site'; return;
+        }
+        empty.style.display = 'none';
+        chip.textContent = items.length + (items.length > 1 ? ' sites' : ' site');
 
+        const BATCH = 48;           // tuỳ ý 32–64
+        let i = 0;
+        function step() {
+          const frag = document.createDocumentFragment();
+          for (let c = 0; c < BATCH && i < items.length; c++, i++) {
+            frag.appendChild(buildCard(items[i], kw)); // tách build DOM 1 card riêng
+          }
+          cards.appendChild(frag);
+          if (i < items.length) requestAnimationFrame(step);
+          else setupKeyboardNav(); // gọi lại khi xong
+        }
+        requestAnimationFrame(step);
+      }
+
+      function generateStaticPreview(src, w = 46, h = 46) {
+        return new Promise((resolve, reject) => {
+          const img = new Image();
+          // Với file local cùng origin thì OK; nếu khác origin, có thể bỏ dòng dưới
+          img.crossOrigin = 'anonymous';
+          img.onload = () => {
+            try {
+              const canvas = document.createElement('canvas');
+              canvas.width = w; canvas.height = h;
+              const ctx = canvas.getContext('2d');
+              // object-fit: cover
+              const r = Math.max(w / img.naturalWidth, h / img.naturalHeight);
+              const nw = img.naturalWidth * r, nh = img.naturalHeight * r;
+              const dx = (w - nw) / 2, dy = (h - nh) / 2;
+              ctx.clearRect(0, 0, w, h);
+              ctx.drawImage(img, dx, dy, nw, nh);
+              resolve(canvas.toDataURL('image/png'));
+            } catch (e) { reject(e); }
+          };
+          img.onerror = reject;
+          img.src = src;
+        });
+      }
+
+      function buildCard(item, kw) {
+        const card = document.createElement('a');
+        card.className = 'card';
+        card.href = item.href; card.rel = 'nofollow'; card.draggable = false;
+
+        const fav = document.createElement('div');
+        fav.className = 'fav';
+
+        const ico = document.createElement('img');
+        ico.alt = '';
+        ico.decoding = 'async';
+        ico.loading = 'lazy';
+
+        // Nguồn icon: ưu tiên data-icon, fallback favicon snapshot
+        const customIcon = item.icon || '';
+        const guess = customIcon || guessFavicon(item.href) || '';
+
+        // Nhận diện file có thể động
+        const looksAnimated = /\.(gif|webp)$/i.test(guess);
+
+        if (guess) {
+          if (looksAnimated) {
+            // Hiển thị tạm chữ cái trong lúc tạo thumbnail
+            fav.appendChild(makeLetterIcon(item.title?.[0]));
+
+            generateStaticPreview(guess, 46, 46)
+              .then(staticUrl => {
+                // Lúc này có thumbnail tĩnh, thay vào IMG
+                fav.innerHTML = '';
+                ico.src = staticUrl;
+                ico.dataset.static = staticUrl;
+                ico.dataset.animated = guess;
+                fav.appendChild(ico);
+
+                // Chỉ chạy động khi hover card
+                card.addEventListener('mouseenter', () => {
+                  if (ico.dataset.animated) ico.src = ico.dataset.animated;
+                });
+                card.addEventListener('mouseleave', () => {
+                  if (ico.dataset.static) ico.src = ico.dataset.static;
+                });
+              })
+              .catch(() => {
+                // Nếu tạo thumbnail lỗi -> dùng ảnh gốc (có thể động)
+                fav.innerHTML = '';
+                ico.src = guess;
+                fav.appendChild(ico);
+              });
+          } else {
+            ico.src = guess;
+            ico.onerror = () => {
+              fav.innerHTML = '';
+              fav.appendChild(makeLetterIcon(item.title?.[0]));
+            };
+            fav.appendChild(ico);
+          }
+        } else {
+          fav.appendChild(makeLetterIcon(item.title?.[0]));
+        }
+
+        const meta = document.createElement('div'); meta.className = 'meta';
+        const h = document.createElement('h3'); h.className = 'title nebula-text';
+        h.innerHTML = highlight(item.title || 'Không tiêu đề', kw);
+
+        const note = document.createElement('div'); note.className = 'note';
+        if (item.note) note.textContent = item.note;
+
+        const badges = document.createElement('div'); badges.className = 'badges';
+        (item.tags || []).forEach(t => {
+          const b = document.createElement('span'); b.className = 'badge'; b.textContent = t;
+          badges.appendChild(b);
+        });
+
+        meta.appendChild(h);
+        if (item.note) meta.appendChild(note);
+        meta.appendChild(badges);
+
+        card.appendChild(fav);
+        card.appendChild(meta);
+        return card;
+      }
+
+      function setupKeyboardNav() {
+        const links = $$('#cards .card');
+        let idx = -1;
+        function focusAt(i) { if (i < 0 || i >= links.length) return; idx = i; links[idx].focus(); }
+        cards.onkeydown = (e) => {
+          if (e.key === 'ArrowDown') { e.preventDefault(); focusAt(Math.min(idx + 1, links.length - 1)); }
+          if (e.key === 'ArrowUp') { e.preventDefault(); focusAt(Math.max(idx - 1, 0)); }
+          if (e.key === 'Enter' && idx >= 0) { links[idx].click(); }
+        };
+      }
       function render(items, kw = '') {
         cards.innerHTML = '';
         if (!items.length) {
@@ -787,21 +948,19 @@
         cards.appendChild(frag);
         chip.textContent = items.length + (items.length > 1 ? ' sites' : ' site');
       }
-
       function applyFilter() {
         const kw = norm(q.value);
-        const tagActiveArr = Array.from(activeTags);
         let items = data.filter(d => {
-          const inKw = !kw || norm(d.title).includes(kw) || norm(d.note).includes(kw) || d.tags.some(t => norm(t).includes(kw));
-          const inTag = !tagActiveArr.length || tagActiveArr.every(t => d.tags.includes(t));
+          const inKw = !kw || d.titleNorm.includes(kw) || d.noteNorm.includes(kw) || d.tagsNorm.some(t => t.includes(kw));
+          const inTag = !activeTag || d.tags.includes(activeTag);
           return inKw && inTag;
         });
-        // Sort newest-looking versions first if tag 'vX' exists; else by title
+
+        // … phần sort & render giữ nguyên
         items.sort((a, b) => {
           const va = (a.tags.find(t => /^v[0-9.]/i.test(t)) || '').slice(1);
           const vb = (b.tags.find(t => /^v[0-9.]/i.test(t)) || '').slice(1);
           if (va && vb && va !== vb) {
-            // naive semver-ish
             const pa = va.split(/[^\d]+/).map(n => parseInt(n || '0'));
             const pb = vb.split(/[^\d]+/).map(n => parseInt(n || '0'));
             for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
@@ -811,7 +970,7 @@
           }
           return a.title.localeCompare(b.title, 'vi');
         });
-        render(items, kw);
+        renderChunked(items, kw);
       }
 
       // Shortcuts
@@ -824,7 +983,14 @@
           else q.blur();
         }
       });
-      q.addEventListener('input', applyFilter);
+      function debounce(fn, ms = 120) {
+        let t;
+        return (...args) => {
+          clearTimeout(t);
+          t = setTimeout(() => fn(...args), ms);
+        };
+      }
+      q.addEventListener('input', debounce(applyFilter, 120));
 
       // First render
       applyFilter();
