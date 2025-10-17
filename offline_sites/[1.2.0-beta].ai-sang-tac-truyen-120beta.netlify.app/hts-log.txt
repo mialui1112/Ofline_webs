@@ -1,0 +1,14 @@
+HTTrack3.49-2+htsswf+htsjava launched on Fri, 17 Oct 2025 21:13:37 at https://ai-sang-tac-truyen-120beta.netlify.app/ +*.ai-sang-tac-truyen-120beta.netlify.app/* +*.netlify.app/* +*.github.io/* +*.githubusercontent.com/* +*.vercel.app/* +*.pages.dev/* +*.gitlab.io/* +*.surge.sh/* +*.firebaseapp.com/* +*.web.app/* +*.render.com/* +*.azurestaticapps.net/* +*.cloudflare.com/* +*.cdnjs.cloudflare.com/* +*.fonts.googleapis.com/* +*.fonts.gstatic.com/* +*.jsdelivr.net/* +*.cdn.jsdelivr.net/* +*.unpkg.com/* +*.gstatic.com/* +*.googleapis.com/* -LOG_DIRLOG_DIR\log.err.log
+(C:\Users\Mialui\Desktop\aisangtac\bin\httrack.exe https://ai-sang-tac-truyen-120beta.netlify.app/ -O C:\Users\Mialui\Desktop\aisangtac\offline_sites\ai-sang-tac-truyen-120beta.netlify.app +*.ai-sang-tac-truyen-120beta.netlify.app/* +*.netlify.app/* +*.github.io/* +*.githubusercontent.com/* +*.vercel.app/* +*.pages.dev/* +*.gitlab.io/* +*.surge.sh/* +*.firebaseapp.com/* +*.web.app/* +*.render.com/* +*.azurestaticapps.net/* +*.cloudflare.com/* +*.cdnjs.cloudflare.com/* +*.fonts.googleapis.com/* +*.fonts.gstatic.com/* +*.jsdelivr.net/* +*.cdn.jsdelivr.net/* +*.unpkg.com/* +*.gstatic.com/* +*.googleapis.com/* -n -%! -q -c8 -F "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122 Safari/537.36" -LOG_DIRLOG_DIR\log.err.log )
+
+Information, Warnings and Errors reported for this mirror:
+note:	the hts-log.txt file, and hts-cache folder, may contain sensitive information,
+	such as username/password authentication for websites mirrored in this project
+	do not share these files/folders if you want these information to remain private
+
+21:13:37	Warning: 	* security warning: !!! BYPASSING SECURITY LIMITS - MONITOR THIS SESSION WITH EXTREME CARE !!!
+21:13:42	Error: 	"Not Found" (404) at link https://fonts.googleapis.com/ (from https://ai-sang-tac-truyen-120beta.netlify.app/)
+21:13:42	Error: 	"Not Found" (404) at link https://fonts.gstatic.com/ (from https://ai-sang-tac-truyen-120beta.netlify.app/)
+
+HTTrack Website Copier/3.49-2 mirror complete in 38 seconds : 97 links scanned, 91 files written (21593707 bytes overall) [21035092 bytes received at 553555 bytes/sec], 844402 bytes transferred using HTTP compression in 8 files, ratio 23%, 1.0 requests per connection
+(2 errors, 1 warnings, 0 messages)
